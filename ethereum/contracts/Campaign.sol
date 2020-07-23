@@ -8,7 +8,7 @@ contract CampaignFactory {
         deployedCampaigns.push(newCampaign);
     }
     
-    function getDeployedCampaigns () public view returns (address[]){
+    function getDeployedCampaigns () public view returns (address[]) {
         return deployedCampaigns;
     }
 }
@@ -35,7 +35,7 @@ contract Campaign {
         _;
     }
 
-    function Campaign (uint minimum, address creator) public{
+    function Campaign (uint minimum, address creator) public {
         manager = creator;
         minimumContribution = minimum;
     }
@@ -46,20 +46,20 @@ contract Campaign {
         approversCount++;
     }
     
-    function createRequest (string description, uint value, address recipient) public restricted{
+    function createRequest (string description, uint value, address recipient) public restricted {
         require(approvers[msg.sender]);
         Request memory newRequest = Request({
-           description: description,
-           value:value,
-           recipient:recipient,
-           complete:false,
+           description: description, 
+           value:value, 
+           recipient:recipient, 
+           complete:false, 
            approvalCount:0
         });
         
         requests.push(newRequest);
     }
     
-    function approveRequest (uint index) public{
+    function approveRequest (uint index) public {
         Request storage request = requests[index];
         require(approvers[msg.sender]);
         require(!request.approvals[msg.sender]);
