@@ -1,19 +1,20 @@
 {
-  "name": "kickstart",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "fs-extra": "^9.0.1",
-    "ganache-cli": "^6.9.1",
-    "mocha": "^8.0.1",
-    "solc": "^0.4.17",
-    "web3": "^1.0.0-beta.26"
-  }
+	"name": "kickstart",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha",
+		"compile": "node ethereum/compile.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"fs-extra": "^9.0.1",
+		"ganache-cli": "^6.9.1",
+		"mocha": "^8.0.1",
+		"solc": "^0.4.17",
+		"web3": "^1.0.0-beta.26"
+	}
 }

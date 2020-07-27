@@ -16,7 +16,7 @@ contract CampaignFactory {
 contract Campaign {
     struct Request {
         string description;
-        uint value;
+        uint amount;
         address recipient;
         bool complete;
         uint approvalCount;
@@ -28,7 +28,8 @@ contract Campaign {
     address public manager; 
     uint public minimumContribution;
     mapping(address => bool) public approvers;
-    uint public approversCount ;
+    uint public approversCount;
+    uint public balance;
  
     modifier restricted () {
         require(msg.sender == manager);
@@ -44,13 +45,13 @@ contract Campaign {
         require(msg.value > minimumContribution);
         approvers[msg.sender] = true;
         approversCount++;
+        balance += msg.value;
     }
     
-    function createRequest (string description, uint value, address recipient) public restricted {
-        require(approvers[msg.sender]);
+    function createRequest (string description, uint amount, address recipient) public restricted {
         Request memory newRequest = Request({
            description: description, 
-           value:value, 
+           amount:amount, 
            recipient:recipient, 
            complete:false, 
            approvalCount:0
@@ -71,7 +72,7 @@ contract Campaign {
         Request storage request = requests[index];
         require(!request.complete);
         require(request.approvalCount > (approversCount / 2));
-        request.recipient.transfer(request.value);
+        request.recipient.transfer(request.amount);
         
         request.complete = true;
         
