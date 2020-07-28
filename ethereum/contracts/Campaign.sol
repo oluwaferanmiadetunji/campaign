@@ -29,7 +29,6 @@ contract Campaign {
     uint public minimumContribution;
     mapping(address => bool) public approvers;
     uint public approversCount;
-    uint public balance;
  
     modifier restricted () {
         require(msg.sender == manager);
@@ -45,7 +44,6 @@ contract Campaign {
         require(msg.value > minimumContribution);
         approvers[msg.sender] = true;
         approversCount++;
-        balance += msg.value;
     }
     
     function createRequest (string description, uint amount, address recipient) public restricted {
@@ -76,5 +74,21 @@ contract Campaign {
         
         request.complete = true;
         
+    }
+
+    function getSummary () public view returns (
+        uint,uint,uint,uint,address
+    ) {
+        return (
+            minimumContribution,
+            this.balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestsCount () public view returns (uint) {
+        return requests.length;
     }
 }
