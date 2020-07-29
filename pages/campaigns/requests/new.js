@@ -44,7 +44,6 @@ class RequestNew extends Component {
 					<Form.Field>
 						<label>Description</label>
 						<Input
-							label='ether'
 							labelPosition='right'
 							value={this.state.description}
 							onChange={(event) => this.setState({ description: event.target.value })}
@@ -52,7 +51,12 @@ class RequestNew extends Component {
 					</Form.Field>
 					<Form.Field>
 						<label>Value in Ether</label>
-						<Input value={this.state.value} onChange={(event) => this.setState({ value: event.target.value })} />
+						<Input
+							value={this.state.value}
+							label='ether'
+							labelPosition='right'
+							onChange={(event) => this.setState({ value: event.target.value })}
+						/>
 					</Form.Field>
 					<Form.Field>
 						<label>Recipient</label>
@@ -63,7 +67,7 @@ class RequestNew extends Component {
 					</Form.Field>
 					<Message error header='Oops!' content={this.state.errorMessage} />
 					<Button primary loading={this.state.loading}>
-						Contribute
+						Create
 					</Button>
 				</Form>
 			</Layout>
