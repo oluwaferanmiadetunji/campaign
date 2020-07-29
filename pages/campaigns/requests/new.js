@@ -17,21 +17,54 @@ class RequestNew extends Component {
 		const { address } = props.query;
 		return { address };
 	}
+
+	onSubmit = async (event) => {
+		event.preventDefault();
+		this.setState({ loading: true, errorMessage: '' });
+		const campaign = Campaign(this.props.address);
+		const { description, value, recipient } = this.state;
+		try {
+			await window.ethereum.enable();
+			const accounts = await web3.eth.getAccounts();
+			await campaign.methods
+				.createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
+				.send({ from: accounts[0] });
+			this.setState({ loading: false });
+			Router.replaceRoute(`/campaigns/${this.props.address}`);
+		} catch (err) {
+			this.setState({ errorMessage: err.message });
+			this.setState({ loading: false });
+		}
+	};
 	render() {
 		return (
 			<Layout>
 				<h3>Create a Request</h3>
-				<Form>
+				<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
 					<Form.Field>
 						<label>Description</label>
-						<Input />
+						<Input
+							label='ether'
+							labelPosition='right'
+							value={this.state.description}
+							onChange={(event) => this.setState({ description: event.target.value })}
+						/>
 					</Form.Field>
 					<Form.Field>
-						<label>Value in Ether</label> <Input />
+						<label>Value in Ether</label>
+						<Input value={this.state.value} onChange={(event) => this.setState({ value: event.target.value })} />
 					</Form.Field>
 					<Form.Field>
-						<label>Recipient</label> <Input />
+						<label>Recipient</label>
+						<Input
+							value={this.state.recipient}
+							onChange={(event) => this.setState({ recipient: event.target.value })}
+						/>
 					</Form.Field>
+					<Message error header='Oops!' content={this.state.errorMessage} />
+					<Button primary loading={this.state.loading}>
+						Contribute
+					</Button>
 				</Form>
 			</Layout>
 		);
